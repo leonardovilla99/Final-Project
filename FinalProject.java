@@ -1,3 +1,4 @@
+package finalproject;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -9,6 +10,7 @@ public class FinalProject extends JFrame{
     private JPanel login, car, payment;
     private JButton nextL, nextC, nextP;
     private JLabel labelL, labelC, labelP;
+    
 
     public FinalProject(){
         // Panel
@@ -28,11 +30,26 @@ public class FinalProject extends JFrame{
         nextL = new JButton("Next");    //Button
         nextL.addActionListener(new NextPage());
         
+        JLabel fname=new JLabel("Name: ");
+        JTextField name=new JTextField("    ");
+        JLabel Address=new JLabel("Address: ");
+        JTextField address=new JTextField("    ");
+        JLabel PhoneNumber=new JLabel("Phone Number: ");
+        JTextField phonenumber=new JTextField("    ");
+        
+         
+        
         labelL = new JLabel("Login");   //Label
 
         login = new JPanel();                //Panel        
         login.add(labelL);
         login.add(nextL);
+        login.add(fname);
+        login.add(name);
+        login.add(Address);
+        login.add(address);
+        login.add(PhoneNumber);
+        login.add(phonenumber);
     }
 
     public void carPanel(){
