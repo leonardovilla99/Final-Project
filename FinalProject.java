@@ -10,6 +10,9 @@ public class FinalProject extends JFrame{
     private JPanel login, car, payment;
     private JButton nextL, nextC, nextP;
     private JLabel labelL, labelC, labelP;
+    private JRadioButton rbCar1, rbCar2, rbCar3, rbCar4;
+    private JCheckBox cbMetal, cbTags, cbPackB;
+    private ButtonGroup bgCars;
     
 
     public FinalProject(){
@@ -56,6 +59,21 @@ public class FinalProject extends JFrame{
         nextC = new JButton("Next");    //Button
         nextC.addActionListener(new NextPage());
 
+        rbCar1 = new JRadioButton("S40");
+        rbCar2 = new JRadioButton("S60");
+        rbCar3 = new JRadioButton("S70");
+        rbCar4 = new JRadioButton("S80");
+
+        cbMetal = new JCheckBox("Metallic Finish");
+        cbTags = new JCheckBox("Titles & Tags");
+        cbPackB = new JCheckBox("Package B\n(S70 and S80 only)");
+
+        bgCars = new ButtonGroup();
+        bgCars.add(rbCar1);
+        bgCars.add(rbCar2);
+        bgCars.add(rbCar3);
+        bgCars.add(rbCar4);
+
         labelC = new JLabel("Car");     //Label
 
         car = new JPanel();                  //Panel
@@ -90,6 +108,32 @@ public class FinalProject extends JFrame{
             }
         }
 
+    }
+
+    // This is for totaling the price for the options chosen in the car page
+    private class carPayment implements ActionListener {
+        double subTotal, s40=27700.00, s60=32500.00, s70=36000.00, s80=44000.00,
+        packB=3250.00, metalPaint=650.00, titleTags=325.00;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(rbCar1.isSelected())
+                subTotal = s40;
+            else if(rbCar2.isSelected())
+                subTotal = s60;
+            else if(rbCar3.isSelected())
+                subTotal = s70;
+            else if(rbCar4.isSelected())
+                subTotal = s80;
+            if(cbPackB.isSelected())
+                subTotal += packB;
+            if(cbMetal.isSelected())
+                subTotal += metalPaint;
+            if(cbTags.isSelected())
+                subTotal += titleTags;
+            subTotal+=(subTotal*0.06);
+        }
+        
     }
 
     public static void main(String[] args) { 
