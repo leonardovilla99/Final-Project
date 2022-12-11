@@ -1,20 +1,29 @@
-package finalproject;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import java.util.Random;
+// Image handle
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class FinalProject extends JFrame{
 
     // Objects
     private JPanel login, car, payment, modelPanel, packagePanel, winButton, tradeIn, paymentType;
     private JButton nextL, nextC, nextP, backC, backP;
-    private JRadioButton rbCar1, rbCar2, rbCar3, rbCar4, financing, credit, cash;
+    private JRadioButton rbCar1, rbCar2, rbCar3, rbCar4;
     private JCheckBox cbMetal, cbTags, cbPackB, tradeInCk;
-    private ButtonGroup bgCars, paymentMethod;
+    private ButtonGroup bgCars;
     private JLabel labelCarPrice;
     private JTextField name, address, phonenumber, carPrice;
-    
+    JComboBox comboBoxPayment;
+
+    // Random profile number
+    Random rand = new Random();
+    int int_random = rand.nextInt(99999999);
 
     public FinalProject(){
         // Panel
@@ -30,6 +39,7 @@ public class FinalProject extends JFrame{
     }
 
     public void loginPanel(){
+
         nextL = new JButton("Next");    //Button
         nextL.addActionListener(new NextPage());
         
@@ -40,17 +50,31 @@ public class FinalProject extends JFrame{
         JLabel PhoneNumber=new JLabel("Phone Number: ");
         phonenumber=new JTextField();
         JLabel emptySpace = new JLabel("");
+        
+        
 
         login = new JPanel();                //Panel 
+        login.setBackground(new java.awt.Color(203, 237, 213));
         login.setLayout(new GridLayout(4,2));
-        login.setBorder(new TitledBorder("Profile"));
+        login.setBorder(new TitledBorder("Profile id: #" + int_random));
         login.add(fname);
         login.add(name);
         login.add(Address);
         login.add(address);
         login.add(PhoneNumber);
         login.add(phonenumber);
-        login.add(emptySpace);
+        
+
+        try {                
+            BufferedImage myPicture = ImageIO.read(new File("./img.jpeg"));
+            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+            login.add(picLabel);
+        } catch (IOException ex) {
+            System.out.println(ex);
+            login.add(emptySpace);
+        }
+
+
         login.add(nextL);
     }
 
@@ -80,6 +104,7 @@ public class FinalProject extends JFrame{
         modelPanel = new JPanel();
         modelPanel.setLayout(new GridLayout(2,2));
         modelPanel.setBorder(new TitledBorder("Models"));
+        modelPanel.setBackground(new java.awt.Color(203, 237, 213));
         modelPanel.add(rbCar1);
         modelPanel.add(rbCar2);
         modelPanel.add(rbCar3);
@@ -93,16 +118,19 @@ public class FinalProject extends JFrame{
         packagePanel = new JPanel();
         packagePanel.setLayout(new GridLayout(2,2));
         packagePanel.setBorder(new TitledBorder("Packages"));
+        packagePanel.setBackground(new java.awt.Color(203, 237, 213));
         packagePanel.add(cbMetal);
         packagePanel.add(cbTags);
         packagePanel.add(cbPackB);
 
         winButton = new JPanel();
         winButton.setLayout(new GridLayout(1,2));
+        winButton.setBackground(new java.awt.Color(203, 237, 213));
         winButton.add(backC);
         winButton.add(nextC);
 
         car = new JPanel();                  //Panel
+        car.setBackground(new java.awt.Color(203, 237, 213));
         car.setLayout(new GridLayout(3,1));
         car.add(modelPanel);
         car.add(packagePanel);
@@ -119,27 +147,24 @@ public class FinalProject extends JFrame{
         tradeIn = new JPanel();
         tradeIn.setLayout(new GridLayout(1,3));
         tradeIn.setBorder(new TitledBorder("Trade-In"));
+        tradeIn.setBackground(new java.awt.Color(203, 237, 213));
         tradeIn.add(tradeInCk);
         tradeIn.add(labelCarPrice);
         tradeIn.add(carPrice);
         labelCarPrice.setVisible(false);
         carPrice.setVisible(false);
 
-        financing = new JRadioButton("Financing (7% for financing)");
-        credit = new JRadioButton("Credit");
-        credit.setSelected(true);
-        cash = new JRadioButton("Cash (deduct 750$)");
-        paymentMethod = new ButtonGroup();
-        paymentMethod.add(financing);
-        paymentMethod.add(credit);
-        paymentMethod.add(cash);
+        String[] paymentTypeString = { "Financing (7% for financing)", "Credit", "Cash (deduct 750$)"};
+        comboBoxPayment = new JComboBox(paymentTypeString);
+        comboBoxPayment.setSelectedIndex(1);
 
         paymentType = new JPanel();
-        paymentType.setLayout(new GridLayout(2,2));
+        paymentType.setLayout(new GridLayout(1,2));
         paymentType.setBorder(new TitledBorder("Payment method"));
-        paymentType.add(financing);
-        paymentType.add(credit);
-        paymentType.add(cash);
+        paymentType.setBackground(new java.awt.Color(203, 237, 213));
+        paymentType.add(comboBoxPayment);
+
+        
 
         nextP = new JButton("Next");    //Button
         nextP.addActionListener(new carPayment());
@@ -148,11 +173,13 @@ public class FinalProject extends JFrame{
 
         winButton = new JPanel();
         winButton.setLayout(new GridLayout(1,2));
+        winButton.setBackground(new java.awt.Color(203, 237, 213));
         winButton.add(backP);
         winButton.add(nextP);
 
         payment = new JPanel();              //Panel
         payment.setLayout(new GridLayout(3,1));
+        payment.setBackground(new java.awt.Color(203, 237, 213));
         payment.add(tradeIn);
         payment.add(paymentType);
         payment.add(winButton);
@@ -248,9 +275,9 @@ public class FinalProject extends JFrame{
                     ownCarPrice = Double.parseDouble(carPrice.getText());
                     subTotal = subTotal - (ownCarPrice * 0.5);
                 }
-                if(financing.isSelected())
+                if(comboBoxPayment.getSelectedIndex() == 0)
                     subTotal = subTotal * 1.07;
-                else if(cash.isSelected())
+                else if(comboBoxPayment.getSelectedIndex() == 2)
                     subTotal = subTotal - 750;
 
                 // Check if price is under 0
